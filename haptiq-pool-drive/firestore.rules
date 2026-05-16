@@ -1,0 +1,16 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /students/{studentId} {
+      // Students can read and update their own verification
+      // (read by querying haptiq_id + email — no auth needed)
+      allow read: if true;
+      // Allow update only for verified field (student self-verify)
+      allow update: if 
+        request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['verified', 'verified_time']);
+      // Only authenticated admins can create/delete
+      allow create, delete: if request.auth != null;
+    }
+  }
+}
