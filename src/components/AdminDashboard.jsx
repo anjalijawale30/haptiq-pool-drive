@@ -57,15 +57,34 @@ export default function AdminDashboard() {
     })
     .slice(0, 10)
 
-  const filtered = students.filter(s => {
-    const matchFilter = filter === 'all' ? true : filter === 'verified' ? s.verified : !s.verified
-    const q = search.toLowerCase()
-    const matchSearch = !q ||
-      s.haptiq_id?.toLowerCase().includes(q) ||
-      s.email?.toLowerCase().includes(q) ||
-      s.name?.toLowerCase().includes(q)
-    return matchFilter && matchSearch
-  })
+const filtered = students.filter(s => {
+  const matchFilter =
+    filter === 'all'
+      ? true
+      : filter === 'verified'
+      ? s.verified
+      : !s.verified
+
+  // Remove dashes and spaces from search input
+  const q = search
+    .toLowerCase()
+    .replace(/-/g, '')
+    .replace(/\s/g, '')
+
+  // Remove dashes and spaces from stored Haptiq ID
+  const normalizedHaptiqId = s.haptiq_id
+    ?.toLowerCase()
+    .replace(/-/g, '')
+    .replace(/\s/g, '')
+
+  const matchSearch =
+    !q ||
+    normalizedHaptiqId?.includes(q) ||
+    s.email?.toLowerCase().includes(search.toLowerCase()) ||
+    s.name?.toLowerCase().includes(search.toLowerCase())
+
+  return matchFilter && matchSearch
+})
 
   async function toggleVerify(student) {
     const newVal = !student.verified
