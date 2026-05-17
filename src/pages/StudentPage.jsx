@@ -38,36 +38,50 @@ async function handleVerify(e) {
 
   try {
 
-    // Normalize entered ID
+    // Normalize entered values
     const enteredId = haptiqId
       .trim()
       .toUpperCase()
       .replace(/-/g, '')
 
-    // Get all students with same email
-    const q = query(
-      collection(db, 'students'),
-      where('email', '==', email.trim().toLowerCase())
-    )
+    const enteredEmail = email
+      .trim()
+      .toLowerCase()
 
-    const snap = await getDocs(q)
+    // Get ALL students
+    const snap = await getDocs(collection(db, 'students'))
 
     if (snap.empty) {
       setState('invalid')
       return
     }
 
-    // Find matching Haptiq ID manually
     let matchedDoc = null
 
     snap.forEach((d) => {
+
       const data = d.data()
 
+      // Normalize DB values
       const dbId = (data.haptiq_id || '')
+        .toString()
+        .trim()
         .toUpperCase()
         .replace(/-/g, '')
 
-      if (dbId === enteredId) {
+      const dbEmail = (data.email || '')
+        .toString()
+        .trim()
+        .toLowerCase()
+
+      console.log('DB ID:', dbId)
+      console.log('Entered ID:', enteredId)
+
+      console.log('DB Email:', dbEmail)
+      console.log('Entered Email:', enteredEmail)
+
+      // Match
+      if (dbId === enteredId && dbEmail === enteredEmail) {
         matchedDoc = {
           id: d.id,
           data
@@ -75,6 +89,7 @@ async function handleVerify(e) {
       }
     })
 
+    // No match
     if (!matchedDoc) {
       setState('invalid')
       return
@@ -107,7 +122,6 @@ async function handleVerify(e) {
     setState('error')
   }
 }
-
   function reset() {
     setState('idle')
     setHaptiqId('')
