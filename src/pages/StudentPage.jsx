@@ -29,46 +29,84 @@ export default function StudentPage() {
   const [state, setState] = useState('idle') // idle | loading | success | already | invalid | error
   const [studentData, setStudentData] = useState(null)
 
-  async function handleVerify(e) {
-    e.preventDefault()
-    if (!haptiqId.trim() || !email.trim()) return
-    setState('loading')
+async function handleVerify(e) {
+  e.preventDefault()
 
-    try {
-      const q = query(
-        collection(db, 'students'),
-        where('haptiq_id', '==', haptiqId.trim().toUpperCase()),
-        where('email', '==', email.trim().toLowerCase())
-      )
-      const snap = await getDocs(q)
+  if (!haptiqId.trim() || !email.trim()) return
 
-      if (snap.empty) {
-        setState('invalid')
-        return
-      }
+  setState('loading')
 
-      const docSnap = snap.docs[0]
-      const data = docSnap.data()
+  try {
 
-      if (data.verified) {
-        setStudentData(data)
-        setState('already')
-        return
-      }
+    // Normalize entered ID
+    const enteredId = haptiqId
+      .trim()
+      .toUpperCase()
+      .replace(/-/g, '')
 
-      // Mark verified
-      await updateDoc(doc(db, 'students', docSnap.id), {
-        verified: true,
-        verified_time: Timestamp.now(),
-      })
+    // Get all students with same email
+    const q = query(
+      collection(db, 'students'),
+      where('email', '==', email.trim().toLowerCase())
+    )
 
-      setStudentData({ ...data, verified_time: new Date() })
-      setState('success')
-    } catch (err) {
-      console.error(err)
-      setState('error')
+    const snap = await getDocs(q)
+
+    if (snap.empty) {
+      setState('invalid')
+      return
     }
+
+    // Find matching Haptiq ID manually
+    let matchedDoc = null
+
+    snap.forEach((d) => {
+      const data = d.data()
+
+      const dbId = (data.haptiq_id || '')
+        .toUpperCase()
+        .replace(/-/g, '')
+
+      if (dbId === enteredId) {
+        matchedDoc = {
+          id: d.id,
+          data
+        }
+      }
+    })
+
+    if (!matchedDoc) {
+      setState('invalid')
+      return
+    }
+
+    const data = matchedDoc.data
+
+    // Already verified
+    if (data.verified) {
+      setStudentData(data)
+      setState('already')
+      return
+    }
+
+    // Update verification
+    await updateDoc(doc(db, 'students', matchedDoc.id), {
+      verified: true,
+      verified_time: Timestamp.now(),
+    })
+
+    setStudentData({
+      ...data,
+      verified_time: new Date()
+    })
+
+    setState('success')
+
+  } catch (err) {
+    console.error(err)
+    setState('error')
   }
+}
 
   function reset() {
     setState('idle')
