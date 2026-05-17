@@ -58,6 +58,16 @@ export default function AdminDashboard() {
     .slice(0, 10)
 
 const filtered = students.filter(s => {
+
+  // Remove dashes + spaces + lowercase
+  const normalizeId = str =>
+    (str || '')
+      .replace(/-/g, '')
+      .replace(/\s/g, '')
+      .toLowerCase()
+
+  const q = normalizeId(search)
+
   const matchFilter =
     filter === 'all'
       ? true
@@ -65,21 +75,9 @@ const filtered = students.filter(s => {
       ? s.verified
       : !s.verified
 
-  // Remove dashes and spaces from search input
-  const q = search
-    .toLowerCase()
-    .replace(/-/g, '')
-    .replace(/\s/g, '')
-
-  // Remove dashes and spaces from stored Haptiq ID
-  const normalizedHaptiqId = s.haptiq_id
-    ?.toLowerCase()
-    .replace(/-/g, '')
-    .replace(/\s/g, '')
-
   const matchSearch =
     !q ||
-    normalizedHaptiqId?.includes(q) ||
+    normalizeId(s.haptiq_id).includes(q) ||
     s.email?.toLowerCase().includes(search.toLowerCase()) ||
     s.name?.toLowerCase().includes(search.toLowerCase())
 
