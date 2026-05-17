@@ -221,7 +221,7 @@ export default function AdminDashboard() {
                   <th className="text-left text-gray-700 text-xs font-semibold uppercase tracking-wide px-4 py-3 hidden md:table-cell">College</th>
                   <th className="text-left text-gray-700 text-xs font-semibold uppercase tracking-wide px-4 py-3">Status</th>
                   <th className="text-left text-gray-700 text-xs font-semibold uppercase tracking-wide px-4 py-3 hidden sm:table-cell">Verified At</th>
-                  <th className="text-left text-gray-700 text-xs font-semibold uppercase tracking-wide px-4 py-3">Action</th>
+                  <th className="text-left text-gray-00 text-xs font-semibold uppercase tracking-wide px-4 py-3">Action</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50">
