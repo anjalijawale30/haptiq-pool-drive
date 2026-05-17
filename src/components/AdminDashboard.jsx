@@ -129,14 +129,14 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-900">
+    <div className="min-h-screen bg-stone-100 text-gray-800">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between shadow-sm">
+      <header className="bg-stone-50 border-b border-stone-300 px-4 py-3 flex items-center justify-between shadow-sm">
         <div className="flex items-center gap-3">
           <img src={LOGO_B64} alt="Indira University" className="h-10 object-contain" />
           <div>
             <h1 className="font-display font-bold text-sm leading-tight text-gray-900">Haptiq Pool Drive 2026</h1>
-            <p className="text-gray-400 text-[10px]">Indira University · Admin Dashboard</p>
+            <p className="text-gray-600 text-[10px]">Indira University · Admin Dashboard</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -166,7 +166,7 @@ export default function AdminDashboard() {
 
         {/* Recently Verified */}
         {recent.length > 0 && (
-          <div className="bg-white border border-gray-200 rounded-2xl p-4 shadow-sm">
+          <div className="bg-stone-50 border border-stone-300 rounded-2xl p-4 shadow-sm">
             <h2 className="text-gray-400 text-xs font-semibold uppercase tracking-wide mb-3">Recently Verified</h2>
             <div className="space-y-2">
               {recent.map(s => (
@@ -190,7 +190,7 @@ export default function AdminDashboard() {
             placeholder="Search by name, Haptiq ID, or email..."
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="flex-1 bg-white border border-gray-200 text-gray-900 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 placeholder-gray-300 shadow-sm"
+            className="flex-1 bg-stone-50 border border-stone-300 text-gray-900 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 placeholder-gray-300 shadow-sm"
           />
           <div className="flex gap-2">
             {['all', 'verified', 'pending'].map(f => (
@@ -215,13 +215,13 @@ export default function AdminDashboard() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-gray-100 bg-gray-50">
-                  <th className="text-left text-gray-400 text-xs font-semibold uppercase tracking-wide px-4 py-3">Name</th>
-                  <th className="text-left text-gray-400 text-xs font-semibold uppercase tracking-wide px-4 py-3 hidden sm:table-cell">Haptiq ID</th>
-                  <th className="text-left text-gray-400 text-xs font-semibold uppercase tracking-wide px-4 py-3 hidden md:table-cell">Email</th>
-                  <th className="text-left text-gray-400 text-xs font-semibold uppercase tracking-wide px-4 py-3 hidden md:table-cell">College</th>
-                  <th className="text-left text-gray-400 text-xs font-semibold uppercase tracking-wide px-4 py-3">Status</th>
-                  <th className="text-left text-gray-400 text-xs font-semibold uppercase tracking-wide px-4 py-3 hidden sm:table-cell">Verified At</th>
-                  <th className="text-left text-gray-400 text-xs font-semibold uppercase tracking-wide px-4 py-3">Action</th>
+                  <th className="text-left text-gray-700 text-xs font-semibold uppercase tracking-wide px-4 py-3">Name</th>
+                  <th className="text-left text-gray-700 text-xs font-semibold uppercase tracking-wide px-4 py-3 hidden sm:table-cell">Haptiq ID</th>
+                  <th className="text-left text-gray-700 text-xs font-semibold uppercase tracking-wide px-4 py-3 hidden md:table-cell">Email</th>
+                  <th className="text-left text-gray-700 text-xs font-semibold uppercase tracking-wide px-4 py-3 hidden md:table-cell">College</th>
+                  <th className="text-left text-gray-700 text-xs font-semibold uppercase tracking-wide px-4 py-3">Status</th>
+                  <th className="text-left text-gray-700 text-xs font-semibold uppercase tracking-wide px-4 py-3 hidden sm:table-cell">Verified At</th>
+                  <th className="text-left text-gray-700 text-xs font-semibold uppercase tracking-wide px-4 py-3">Action</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50">
@@ -229,7 +229,7 @@ export default function AdminDashboard() {
                   <tr><td colSpan={7} className="text-center text-gray-300 py-10">No students found</td></tr>
                 )}
                 {filtered.map(s => (
-                  <tr key={s.id} className="hover:bg-gray-50 transition">
+                  <tr key={s.id} className="hover:bg-stone-100 transition">
                     <td className="px-4 py-3 text-gray-800 font-medium">{s.name}</td>
                     <td className="px-4 py-3 text-gray-500 font-mono text-xs hidden sm:table-cell">{s.haptiq_id}</td>
                     <td className="px-4 py-3 text-gray-400 text-xs hidden md:table-cell">{s.email}</td>
